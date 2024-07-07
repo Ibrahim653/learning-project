@@ -1,4 +1,23 @@
 {
-    "home_screen_title": "Home Screen",
-    "change": "change"
+    "appName": "Application name",
+    "greeting": "Hello, Kortobaa!",
+    "home_screen" : {
+        "title": "Home",
+        "body" : "Home Screen Body Text" , 
+        "toggle_language" :"Toggle Language"
+    },
+    "ar": "العربية",
+    "en": "English",
+    "start": "Start",
+    "toggle"  : "Toggle Language",
+    "products": {
+        "groovy_shorts": "Groovy Shorts",
+        "karati_kit": "Karati Kit",
+        "denim_jeans": "Denim Jeans",
+        "red_backpack": "Red Backpack",
+        "drum_sticks": "Drum & Sticks",
+        "blue_suitcase": "Blue Suitcase",
+        "roller_skates": "Roller Skates",
+        "electric_guitar": "Electric Guitar"
+    }
 }

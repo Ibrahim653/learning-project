@@ -15,12 +15,50 @@ class CodegenLoader extends AssetLoader{
   }
 
   static const Map<String,dynamic> ar = {
-  "home_screen_title": "الصفحة الرئيسية",
-  "change": "تغيير"
+  "appName": "اسم التطبيق",
+  "greeting": "مرحباً، قرطبة",
+  "home_screen": {
+    "title": "الرئيسية",
+    "body": "نص الصفحة الرئيسية",
+    "toggle_language": "غيّر اللغة"
+  },
+  "ar": "العربية",
+  "en": "English",
+  "start": "ابدأ",
+  "toggle": "غير اللغة",
+  "products": {
+    "groovy_shorts": "شورت جروفي",
+    "karati_kit": "طقم كاراتي",
+    "denim_jeans": "جينز دنيم",
+    "red_backpack": "حقيبة ظهر حمراء",
+    "drum_sticks": "طبل وعصي",
+    "blue_suitcase": "حقيبة زرقاء",
+    "roller_skates": "أحذية التزلج",
+    "electric_guitar": "جيتار كهربائي"
+  }
 };
 static const Map<String,dynamic> en = {
-  "home_screen_title": "Home Screen",
-  "change": "change"
+  "appName": "Application name",
+  "greeting": "Hello, Kortobaa!",
+  "home_screen": {
+    "title": "Home",
+    "body": "Home Screen Body Text",
+    "toggle_language": "Toggle Language"
+  },
+  "ar": "العربية",
+  "en": "English",
+  "start": "Start",
+  "toggle": "Toggle Language",
+  "products": {
+    "groovy_shorts": "Groovy Shorts",
+    "karati_kit": "Karati Kit",
+    "denim_jeans": "Denim Jeans",
+    "red_backpack": "Red Backpack",
+    "drum_sticks": "Drum & Sticks",
+    "blue_suitcase": "Blue Suitcase",
+    "roller_skates": "Roller Skates",
+    "electric_guitar": "Electric Guitar"
+  }
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ar": ar, "en": en};
 }

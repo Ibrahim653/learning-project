@@ -4,8 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_files/generated/codegen_loader.g.dart';
 import 'package:riverpod_files/generated/locale_keys.g.dart';
 import 'package:riverpod_files/helper/locale.dart';
-import 'package:riverpod_files/screens/cart/cart_screen.dart';
-import 'package:riverpod_files/screens/home/home_screen.dart';
+import 'package:riverpod_files/routes/custome_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,7 +12,7 @@ void main() async {
 
   runApp(ProviderScope(
       child: EasyLocalization(
-    supportedLocales: const [AppLocale.arabic, AppLocale.english],
+    supportedLocales: AppLocale.locales,
     path: 'assets/translations',
     assetLoader: const CodegenLoader(),
     fallbackLocale: AppLocale.english,
@@ -22,23 +21,25 @@ void main() async {
   )));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context, WidgetRef ref) {
+    final goRouter = ref.watch(CustomRouter.provider).goRouter;
+
+    return MaterialApp.router(
       onGenerateTitle: (context) {
-        return LocaleKeys.home_screen_title.tr();
+        return LocaleKeys.appName.tr();
       },
+      debugShowCheckedModeBanner: false,
+      routerConfig: goRouter,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      title: '',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
       ),
-      home: const HomeScreen(),
     );
   }
 }
