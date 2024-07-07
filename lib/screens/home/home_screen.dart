@@ -15,7 +15,6 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final allProductProvider = ref.watch(allProductsProvider);
     final cartProducts = ref.watch(CartNotifier.cartNotifierProvider);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(LocaleKeys.greeting.tr()),

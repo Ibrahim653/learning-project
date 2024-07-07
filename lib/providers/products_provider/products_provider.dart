@@ -58,6 +58,14 @@ class ProductsNotifier extends StateNotifier<List<Product>> {
     }
   }
 
+  List<Product> searchProducts(String query) {
+    final lowerCaseQuery = query.toLowerCase();
+    return state
+        .where(
+            (product) => product.title.toLowerCase().contains(lowerCaseQuery))
+        .toList();
+  }
+
   static final productsProvider =
       StateNotifierProvider<ProductsNotifier, List<Product>>((ref) {
     final getProductsRepo = ref.watch(getProductsRepoProvider);
