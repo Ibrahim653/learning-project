@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_files/providers/cart_provider.dart';
@@ -7,7 +8,7 @@ class CartScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final cartProducts = ref.watch(cartNotifierProvider);
+    final cartProducts = ref.watch(CartNotifier.cartNotifierProvider);
     final totalPrice = ref.watch(cartTotalProvider);
     return Scaffold(
       appBar: AppBar(
@@ -28,14 +29,14 @@ class CartScreen extends ConsumerWidget {
                       children: [
                         Image.asset(product.image, width: 60, height: 60),
                         const SizedBox(width: 10),
-                        Text('${product.title}...'),
+                        Text(product.title.tr()),
                         const Expanded(child: SizedBox()),
                         Text('£${product.price}'),
                         IconButton(
                           icon: const Icon(Icons.remove_circle_outline),
                           onPressed: () {
                             ref
-                                .read(cartNotifierProvider.notifier)
+                                .read(CartNotifier.cartNotifierProvider.notifier)
                                 .removeProductFromCart(product);
                           },
                         ),
