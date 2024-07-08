@@ -52,6 +52,7 @@ dependencies:
     git:
       url: git@github.com:kortobaa/kortobaa_core_package_mobile.git
       ref: main
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
