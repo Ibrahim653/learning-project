@@ -24,9 +24,9 @@ class LoginNotifier extends StateNotifier<AsyncValue<LoginResponse?>> {
 
     response.when(
       success: (loginResponse) async {
-        await CacheHelper.saveString(
+        await CacheHelper.setSecuredString(
             Constants.accessToken, loginResponse.token);
-        await CacheHelper.saveString(
+        await CacheHelper.setSecuredString(
             Constants.accessToken, loginResponse.refreshToken);
 
         state = AsyncValue.data(loginResponse);

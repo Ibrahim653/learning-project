@@ -1,4 +1,4 @@
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheHelper {
@@ -22,5 +22,24 @@ class CacheHelper {
 
   static Future<bool> clearData() async {
     return await _preferences.clear();
+  }
+
+  /// Saves a [value] with a [key] in the FlutterSecureStorage.
+  static setSecuredString(String key, String value) async {
+    const flutterSecureStorage = FlutterSecureStorage();
+
+    await flutterSecureStorage.write(key: key, value: value);
+  }
+
+  /// Gets an String value from FlutterSecureStorage with given [key].
+  static getSecuredString(String key) async {
+    const flutterSecureStorage = FlutterSecureStorage();
+    return await flutterSecureStorage.read(key: key) ?? '';
+  }
+
+  /// Removes all keys and values in the FlutterSecureStorage
+  static clearAllSecuredData() async {
+    const flutterSecureStorage = FlutterSecureStorage();
+    await flutterSecureStorage.deleteAll();
   }
 }
