@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:riverpod_files/providers/products_provider/products_provider.dart';
 import 'package:riverpod_files/screens/products/products_search_screen.dart';
+
+import '../../providers/products_notifier/products_notifier.dart';
 
 class ProductListScreen extends ConsumerWidget {
   const ProductListScreen({super.key});

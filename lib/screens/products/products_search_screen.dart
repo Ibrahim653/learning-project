@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_files/providers/products_provider/products_provider.dart';
+
+import '../../providers/products_notifier/products_notifier.dart';
 
 class ProductSearchDelegate extends SearchDelegate<String> {
   final WidgetRef ref;
@@ -31,7 +32,9 @@ class ProductSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    final searchResults = ref.watch(ProductsNotifier.productsProvider.notifier).searchProducts(query);
+    final searchResults = ref
+        .watch(ProductsNotifier.productsProvider.notifier)
+        .searchProducts(query);
 
     return ListView.builder(
       itemCount: searchResults.length,
@@ -56,7 +59,9 @@ class ProductSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final searchResults = ref.watch(ProductsNotifier.productsProvider.notifier).searchProducts(query);
+    final searchResults = ref
+        .watch(ProductsNotifier.productsProvider.notifier)
+        .searchProducts(query);
 
     return ListView.builder(
       itemCount: searchResults.length,

@@ -8,12 +8,14 @@ import 'package:riverpod_files/screens/products/products_list_screen.dart';
 import 'package:riverpod_files/screens/widgets/page_not_found_screen.dart';
 
 import '../screens/home/scaffold_with_bottom_nav_bar/scaffold_with_bottom_nav_bar.dart';
+import '../screens/login/login_screen.dart';
 
 // private navigators
 // we use two navigators to separate the shell from the root navigator
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 enum AppRoute {
+  login('/login'),
   home('/home'),
   counter('/counter'),
   cart('/cart'),
@@ -33,13 +35,19 @@ class CustomRouter {
   });
 
   final goRouter = GoRouter(
-    initialLocation: AppRoute.home.path,
+    initialLocation: AppRoute.login.path,
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
     redirect: (context, state) {
       return null;
     },
     routes: [
+           GoRoute(
+        path: AppRoute.login.path,
+        name: AppRoute.login.name,
+        pageBuilder: (context, state) =>
+             const NoTransitionPage(child: LoginPage()),
+      ),
       //StatefulShellRoute is a wrapper for the navigation shell widget
       //it is used to manage the state of the navigation shell
       //you can use it in the root navigator or in any nested navigator
