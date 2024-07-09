@@ -4,13 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_files/generated/codegen_loader.g.dart';
 import 'package:riverpod_files/generated/locale_keys.g.dart';
 import 'package:riverpod_files/helper/locale.dart';
-import 'package:riverpod_files/helper/shared_prefs_helper.dart';
 import 'package:riverpod_files/routes/custome_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  await CacheHelper.init();
+
   runApp(ProviderScope(
       child: EasyLocalization(
     supportedLocales: AppLocale.locales,
