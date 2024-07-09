@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final valueProvider = Provider<int>((ref) {
-  return 40;
-});
+
 
 final counterProvider = StateProvider<int>((ref) {
   return 0;

@@ -5,6 +5,8 @@ import 'package:riverpod_files/blocs/models/login_models/login_response.dart';
 import 'package:riverpod_files/blocs/models/products_model/product_response.dart';
 import 'package:riverpod_files/networking/api_constants.dart';
 
+import '../blocs/models/products_model/product_details_model.dart';
+
 part 'api_service.g.dart';
 
 @RestApi(baseUrl: ApiConstants.apiBaseUrl)
@@ -20,4 +22,10 @@ abstract class ApiService {
 
   @POST(ApiConstants.login)
   Future<LoginResponse> login(@Body() LoginRequestBody loginModel);
+
+  @GET(ApiConstants.getProductDetails)
+  Future<ProductDetailsModel> getProductDetails(
+    @Path('id') int id,
+  );
+
 }

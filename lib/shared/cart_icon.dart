@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_files/providers/cart_provider.dart';
-import 'package:riverpod_files/screens/cart/cart_screen.dart';
+import 'package:riverpod_files/routes/custome_router.dart';
 
 class CartIcon extends ConsumerWidget {
   const CartIcon({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final nuberOfItemInCart = ref.watch(CartNotifier.cartNotifierProvider);
+    final nuberOfItemInCart = ref.watch(CartNotifier.provider);
     return Stack(
       children: [
         IconButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return const CartScreen();
-            }));
+            context.push(AppRoute.cart.path);
           },
           icon: const Icon(Icons.shopping_bag_outlined),
         ),

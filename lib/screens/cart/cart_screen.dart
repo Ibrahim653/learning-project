@@ -8,7 +8,7 @@ class CartScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final cartProducts = ref.watch(CartNotifier.cartNotifierProvider);
+    final cartProducts = ref.watch(CartNotifier.provider);
     final totalPrice = ref.watch(cartTotalProvider);
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +36,7 @@ class CartScreen extends ConsumerWidget {
                           icon: const Icon(Icons.remove_circle_outline),
                           onPressed: () {
                             ref
-                                .read(CartNotifier.cartNotifierProvider.notifier)
+                                .read(CartNotifier.provider.notifier)
                                 .removeProductFromCart(product);
                           },
                         ),

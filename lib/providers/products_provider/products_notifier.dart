@@ -4,6 +4,11 @@ import 'package:riverpod_files/blocs/models/products_model/product_response.dart
 import 'package:riverpod_files/providers/providers.dart';
 import '../../blocs/repos/products_repo/products_repo.dart';
 
+final getProductsRepoProvider = Provider<ProductsRepo>((ref) {
+  final apiService = ref.watch(apiServiceProvider);
+  return ProductsRepo(apiService);
+});
+
 class ProductsNotifier extends StateNotifier<List<Product>> {
   final ProductsRepo _getProductsRepo;
   int _page = 0;
@@ -11,10 +16,18 @@ class ProductsNotifier extends StateNotifier<List<Product>> {
   int _totalProducts = 1;
   bool _isLoading = false;
 
-  ProductsNotifier(this._getProductsRepo) : super([]);
+  ProductsNotifier(this._getProductsRepo) : super([]) {
+   // _fetchAllProducts(); 
+  }
 
   bool get isLoading => _isLoading;
   int get totalProducts => _totalProducts;
+
+  // Future<void> _fetchAllProducts() async {
+  //   while (state.length < _totalProducts) {
+  //     await fetchProducts();
+  //   }
+  // }
 
   Future<void> fetchProducts() async {
     if (_isLoading || (state.length >= _totalProducts)) {

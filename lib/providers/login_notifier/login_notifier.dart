@@ -8,6 +8,12 @@ import 'package:riverpod_files/providers/providers.dart';
 import '../../helper/constants.dart';
 import '../../helper/shared_prefs_helper.dart';
 
+
+final loginRepoProvider = Provider<LoginRepo>((ref) {
+  final apiService = ref.watch(apiServiceProvider);
+  return LoginRepo(apiService);
+});
+
 class LoginNotifier extends StateNotifier<AsyncValue<LoginResponse?>> {
   final LoginRepo _loginRepo;
 
@@ -34,10 +40,12 @@ class LoginNotifier extends StateNotifier<AsyncValue<LoginResponse?>> {
       failure: (error) => state = AsyncValue.error(error, StackTrace.current),
     );
   }
+
+  static final provider =
+      StateNotifierProvider<LoginNotifier, AsyncValue<LoginResponse?>>((ref) {
+    final loginRepo = ref.watch(loginRepoProvider);
+    return LoginNotifier(loginRepo);
+  });
 }
 
-final loginNotifierProvider =
-    StateNotifierProvider<LoginNotifier, AsyncValue<LoginResponse?>>((ref) {
-  final loginRepo = ref.watch(loginRepoProvider);
-  return LoginNotifier(loginRepo);
-});
+

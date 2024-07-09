@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:riverpod_files/screens/cart/cart_screen.dart';
 import 'package:riverpod_files/screens/clock/clock.dart';
 import 'package:riverpod_files/screens/counter/counter_page.dart';
 import 'package:riverpod_files/screens/home/home_screen.dart';
@@ -9,6 +10,7 @@ import 'package:riverpod_files/screens/widgets/page_not_found_screen.dart';
 
 import '../screens/home/scaffold_with_bottom_nav_bar/scaffold_with_bottom_nav_bar.dart';
 import '../screens/login/login_screen.dart';
+import '../screens/products/product_details_screen.dart';
 
 // private navigators
 // we use two navigators to separate the shell from the root navigator
@@ -20,7 +22,8 @@ enum AppRoute {
   counter('/counter'),
   cart('/cart'),
   clock('/clock'),
-  productList('/productList');
+  productList('/productList'),
+  productDetails('/productDetails');
 
   final String path;
 
@@ -35,19 +38,22 @@ class CustomRouter {
   });
 
   final goRouter = GoRouter(
-    initialLocation: AppRoute.login.path,
+    initialLocation: AppRoute.home.path,
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
     redirect: (context, state) {
       return null;
     },
     routes: [
-           GoRoute(
+//login page
+
+      GoRoute(
         path: AppRoute.login.path,
         name: AppRoute.login.name,
         pageBuilder: (context, state) =>
-             const NoTransitionPage(child: LoginPage()),
+            const NoTransitionPage(child: LoginPage()),
       ),
+
       //StatefulShellRoute is a wrapper for the navigation shell widget
       //it is used to manage the state of the navigation shell
       //you can use it in the root navigator or in any nested navigator
@@ -92,7 +98,7 @@ class CustomRouter {
               ),
             ],
           ),
-           StatefulShellBranch(
+          StatefulShellBranch(
             routes: [
               GoRoute(
                 path: AppRoute.productList.path,
@@ -102,8 +108,20 @@ class CustomRouter {
               ),
             ],
           ),
-        
         ],
+      ),
+      GoRoute(
+        path: AppRoute.cart.path,
+        name: AppRoute.cart.name,
+        pageBuilder: (context, state) =>
+            const NoTransitionPage(child: CartScreen()),
+      ),
+      GoRoute(
+        path: AppRoute.productDetails.path,
+        name: AppRoute.productDetails.name,
+        pageBuilder: (context, state) {
+          return const NoTransitionPage(child: ProductDetailsScreen());
+        },
       ),
     ],
     errorBuilder: (_, state) => const PageNotFoundScreen(),

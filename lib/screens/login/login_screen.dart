@@ -9,7 +9,7 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginNotifier = ref.read(loginNotifierProvider.notifier);
+    final loginNotifier = ref.read(LoginNotifier.provider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +65,7 @@ class LoginListner extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, ref) {
-    final loginState = ref.watch(loginNotifierProvider);
+    final loginState = ref.watch(LoginNotifier.provider);
 
     return loginState.when(
       data: (loginResponse) {

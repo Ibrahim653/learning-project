@@ -18,7 +18,7 @@ class CartNotifier extends StateNotifier<Set<Product>> {
       }).toSet();
     }
   }
-static  final cartNotifierProvider =
+static  final provider =
     StateNotifierProvider<CartNotifier, Set<Product>>((ref) {
   return CartNotifier();
 });
@@ -27,7 +27,7 @@ static  final cartNotifierProvider =
 
 
 final cartTotalProvider = Provider<int>((ref) {
-  final cartProducts = ref.watch(CartNotifier.cartNotifierProvider);
+  final cartProducts = ref.watch(CartNotifier.provider);
   int totalPrice = 0;
   for (Product product in cartProducts) {
     totalPrice += product.price;

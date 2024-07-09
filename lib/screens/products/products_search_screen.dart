@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../../providers/products_notifier/products_notifier.dart';
+import 'package:go_router/go_router.dart';
+import '../../providers/products_provider/product_details_notifier.dart';
+import '../../providers/products_provider/products_notifier.dart';
+import '../../routes/custome_router.dart';
 
 class ProductSearchDelegate extends SearchDelegate<String> {
   final WidgetRef ref;
@@ -15,6 +17,7 @@ class ProductSearchDelegate extends SearchDelegate<String> {
         icon: const Icon(Icons.clear),
         onPressed: () {
           query = '';
+          showSuggestions(context);
         },
       ),
     ];
@@ -32,36 +35,18 @@ class ProductSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    final searchResults = ref
-        .watch(ProductsNotifier.productsProvider.notifier)
-        .searchProducts(query);
-
-    return ListView.builder(
-      itemCount: searchResults.length,
-      itemBuilder: (context, index) {
-        final product = searchResults[index];
-        return ListTile(
-          leading: Image.network(
-            product.thumbnail,
-            width: 60,
-            height: 60,
-            fit: BoxFit.cover,
-          ),
-          title: Text(product.title),
-          subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
-          onTap: () {
-            close(context, product.title);
-          },
-        );
-      },
-    );
+    return const Center(child: CircularProgressIndicator());
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final searchResults = ref
-        .watch(ProductsNotifier.productsProvider.notifier)
-        .searchProducts(query);
+    final productsNotifier = ref.watch(ProductsNotifier.productsProvider.notifier);
+
+    if (productsNotifier.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    final searchResults = productsNotifier.searchProducts(query);
 
     return ListView.builder(
       itemCount: searchResults.length,
@@ -76,9 +61,11 @@ class ProductSearchDelegate extends SearchDelegate<String> {
           ),
           title: Text(product.title),
           subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
-          onTap: () {
-            query = product.title;
-            showResults(context);
+          onTap: () async {
+            await ref
+                .read(ProductDetailsNotifier.provider.notifier)
+                .fetchProductDetails(product.id);
+            if (context.mounted) context.push(AppRoute.productDetails.path);
           },
         );
       },
