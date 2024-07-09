@@ -71,3 +71,59 @@ class ProductsNotifier extends StateNotifier<List<Product>> {
     return ProductsNotifier(getProductsRepo);
   });
 }
+
+
+
+
+// class ProductsNotifier extends PageNotifier<List<Product>>
+//     with PaginatedListNotifierMixin<PageState<List<Product>>, Product> {
+//   static final provider = StateNotifierProvider.autoDispose<ProductsNotifier,
+//       PageState<List<Product>>>((ref) {
+//     return ProductsNotifier(
+//       getProductsRepo: ProductsRepo(ref.watch(apiServiceProvider)),
+//    errorHandler: ref.watch(IPageErrorHandler.provider),
+//       successHandler: ref.watch(IPageSuccessHandler.provider),
+//     );
+//   });
+
+//   ProductsNotifier({
+//     required ProductsRepo getProductsRepo,
+//     required super.errorHandler,
+//     required super.successHandler,
+//     this.pager = const PageConfigs(10),
+//   }) : _getProductsRepo = getProductsRepo {
+//     fetch();
+//   }
+//   final ProductsRepo _getProductsRepo;
+
+//   @override
+//   final PageConfigs pager;
+
+//   @override
+//   Future<PageList<Product>> getData(int page, int count) async {
+//     final result = await _getProductsRepo.getProducts(
+//       PaginationParams(
+//         offset: page * count,
+//         limit: count,
+//       ),
+//     );
+//     return PageList(result.when(
+//       success: (product) {
+//         if (product.products.isNotEmpty) return product.products;
+//         return [];
+//       },
+//       failure: (error) => [],
+//     ));
+//   }
+//    Future<void> fetchProducts() async {
+//     state = stateFactory.createLoading();
+//     final result = await getData(currentPage, pager.pageSize);
+//     if(result.items.isNotEmpty){
+//     final  products=result.items;
+//  state = stateFactory.createLoaded(products);
+//         pager.pageSize+1;
+//     }else{
+
+//     }
+//   }
+// }

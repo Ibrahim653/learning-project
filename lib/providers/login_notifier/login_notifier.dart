@@ -7,46 +7,6 @@ import 'package:riverpod_files/blocs/repos/login_repo/login_repo.dart';
 import 'package:riverpod_files/providers/providers.dart';
 
 import '../../helper/constants.dart';
-import '../../helper/shared_prefs_helper.dart';
-
-// final loginRepoProvider = Provider<LoginRepo>((ref) {
-//   final apiService = ref.watch(apiServiceProvider);
-//   return LoginRepo(apiService);
-// });
-
-// class LoginNotifier extends StateNotifier<AsyncValue<LoginResponse?>> {
-//   final LoginRepo _loginRepo;
-
-//   LoginNotifier(this._loginRepo) : super(const AsyncValue.data(null));
-//   TextEditingController usernameController = TextEditingController();
-//   TextEditingController passwordController = TextEditingController();
-//   final formKey = GlobalKey<FormState>();
-
-//   Future<void> login() async {
-//     state = const AsyncValue.loading();
-//     final loginRequestBody = LoginRequestBody(
-//         username: usernameController.text, password: passwordController.text);
-//     final response = await _loginRepo.login(loginRequestBody);
-
-//     response.when(
-//       success: (loginResponse) async {
-//         await CacheHelper.setSecuredString(
-//             Constants.accessToken, loginResponse.token);
-//         await CacheHelper.setSecuredString(
-//             Constants.accessToken, loginResponse.refreshToken);
-
-//         state = AsyncValue.data(loginResponse);
-//       },
-//       failure: (error) => state = AsyncValue.error(error, StackTrace.current),
-//     );
-//   }
-
-//   static final provider =
-//       StateNotifierProvider<LoginNotifier, AsyncValue<LoginResponse?>>((ref) {
-//     final loginRepo = ref.watch(loginRepoProvider);
-//     return LoginNotifier(loginRepo);
-//   });
-// }
 
 class LoginNotifier extends PageNotifier<LoginResponse> {
   static final provider =
@@ -54,31 +14,39 @@ class LoginNotifier extends PageNotifier<LoginResponse> {
     final apiService = ref.watch(apiServiceProvider);
 
     return LoginNotifier(
-      LoginRepo(apiService),
+      loginRepo: LoginRepo(apiService),
+      secureData: ref.watch(SimpleSecureData.provider),
       errorHandler: ref.watch(IPageErrorHandler.provider),
       successHandler: ref.watch(IPageSuccessHandler.provider),
     );
   });
-  LoginNotifier(this._loginRepo,
-      {required super.errorHandler, required super.successHandler}) {
+
+  LoginNotifier({
+    required this.loginRepo,
+    required this.secureData,
+    required super.errorHandler,
+    required super.successHandler,
+  }) {
     updateState(stateFactory.createVoid());
   }
-  final LoginRepo _loginRepo;
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
+  final LoginRepo loginRepo;
+  final SimpleSecureData secureData;
+
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   Future<void> login() async {
     state = stateFactory.createLoading();
     final loginRequestBody = LoginRequestBody(
         username: usernameController.text, password: passwordController.text);
-    final response = await _loginRepo.login(loginRequestBody);
+    final response = await loginRepo.login(loginRequestBody);
+
     response.when(
       success: (loginResponse) async {
-        await CacheHelper.setSecuredString(
-            Constants.accessToken, loginResponse.token);
-        await CacheHelper.setSecuredString(
-            Constants.accessToken, loginResponse.refreshToken);
+        await secureData.readString(Constants.accessToken);
+        await secureData.readString(Constants.refreshToken);
 
         state = stateFactory.createLoaded(loginResponse);
       },
