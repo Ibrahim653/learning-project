@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kortobaa_core_package/kortobaa_core_package.dart';
 import 'package:riverpod_files/routes/custome_router.dart';
+import '../../blocs/models/login_models/login_response.dart';
 import '../../providers/login_notifier/login_notifier.dart';
 
 class LoginPage extends ConsumerWidget {
@@ -10,6 +12,21 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final loginNotifier = ref.read(LoginNotifier.provider.notifier);
+    final loginState = ref.watch(LoginNotifier.provider);
+
+    ref.listen<PageState<LoginResponse>>(LoginNotifier.provider,
+        (previous, next) {
+      next.when(
+        onData: (data) {
+          context.goNamed(AppRoute.home.name);
+        },
+        onError: (error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(error.message.toString())),
+          );
+        },
+      );
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -49,37 +66,16 @@ class LoginPage extends ConsumerWidget {
                     await loginNotifier.login();
                   }
                 },
-                child: const Text('Login'),
+                child: loginState.isLoading
+                    ? const CircularProgressIndicator(
+                        color: Colors.white,
+                      )
+                    : const Text('Login'),
               ),
-              const LoginListner(),
             ],
           ),
         ),
       ),
-    );
-  }
-}
-
-class LoginListner extends ConsumerWidget {
-  const LoginListner({super.key});
-
-  @override
-  Widget build(BuildContext context, ref) {
-    final loginState = ref.watch(LoginNotifier.provider);
-
-    return loginState.when(
-      data: (loginResponse) {
-        if (loginResponse != null) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            context.goNamed(AppRoute.home.name);
-          });
-        }
-        return loginResponse != null
-            ? Text('Welcome, ${loginResponse.username}')
-            : Container();
-      },
-      loading: () => const CircularProgressIndicator(),
-      error: (error, stack) => Text('Error: ${error.toString()}'),
     );
   }
 }

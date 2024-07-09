@@ -38,7 +38,7 @@ class CustomRouter {
   });
 
   final goRouter = GoRouter(
-    initialLocation: AppRoute.home.path,
+    initialLocation: AppRoute.login.path,
     navigatorKey: _rootNavigatorKey,
     debugLogDiagnostics: true,
     redirect: (context, state) {
