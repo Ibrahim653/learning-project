@@ -94,7 +94,7 @@ class CustomRouter {
                 path: AppRoute.clock.path,
                 name: AppRoute.clock.name,
                 pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: Clock()),
+                    const NoTransitionPage(child: ClockScreen()),
               ),
             ],
           ),
