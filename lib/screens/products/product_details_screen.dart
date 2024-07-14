@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kortobaa_core_package/kortobaa_core_package.dart';
 
 import '../../providers/products_provider/product_details_notifier.dart';
 
@@ -10,17 +11,13 @@ class ProductDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final productDetailsState = ref.watch(ProductDetailsNotifier.provider);
 
-    return productDetailsState.when(
-      data: (product) {
-        if (product == null) {
-          return const Center(child: Text('No product found'));
-        }
-
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(product.title),
-          ),
-          body: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Product Details'),
+      ),
+      body: productDetailsState.when(
+        onData: (product) {
+          return SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -60,11 +57,17 @@ class ProductDetailsScreen extends ConsumerWidget {
                 ),
               ],
             ),
-          ),
-        );
-      },
-      loading: () => const Center(child: CircularProgressIndicator()),
-      error: (error, stack) => Center(child: Text('Error: $error')),
+          );
+        },
+        onLoading: () => const Center(child: CircularProgressIndicator()),
+        onError: (error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(error.message.toString())),
+          );
+          return Text('Error: ${error.message}');
+        },
+        onOther: (state) => const Center(child: Text('Unexpected state')),
+      ),
     );
   }
 }

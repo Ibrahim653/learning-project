@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:kortobaa_core_package/kortobaa_core_package.dart';
 import 'package:riverpod_files/providers/cart_provider.dart';
 import 'package:riverpod_files/routes/custome_router.dart';
 
@@ -10,6 +11,7 @@ class CartIcon extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final nuberOfItemInCart = ref.watch(CartNotifier.provider);
+    
     return Stack(
       children: [
         IconButton(
@@ -30,7 +32,7 @@ class CartIcon extends ConsumerWidget {
               color: Colors.blueAccent,
             ),
             child: Text(
-              nuberOfItemInCart.length.toString(),
+              nuberOfItemInCart.data!.length.toString(),
               style: const TextStyle(color: Colors.white),
             ),
           ),

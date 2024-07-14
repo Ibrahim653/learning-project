@@ -1,9 +1,11 @@
 
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_files/blocs/models/products_model/product_details_model.dart';
 
 import '../../../networking/api_result.dart';
 import '../../../networking/api_service.dart';
+import '../../../providers/providers.dart';
 
 class ProductDetailsRepo {
   final ApiService _apiService;
@@ -20,3 +22,7 @@ class ProductDetailsRepo {
     }
   }
 }
+final productDetailsRepoProvider = Provider<ProductDetailsRepo>((ref) {
+  final apiService = ref.watch(apiServiceProvider);
+  return ProductDetailsRepo(apiService);
+});

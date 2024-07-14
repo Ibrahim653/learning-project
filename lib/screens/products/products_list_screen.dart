@@ -11,8 +11,7 @@ class ProductListScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final products = ref.watch(ProductsNotifier.productsProvider);
-    final productsNotifier =
-        ref.watch(ProductsNotifier.productsProvider.notifier);
+    final productsNotifier = ref.watch(ProductsNotifier.productsProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -60,12 +59,12 @@ class ProductListScreen extends ConsumerWidget {
                     product.id.toString(),
                     style: const TextStyle(color: Colors.grey),
                   ),
+                 
                 ),
               ),
             );
           } else {
-            if (!productsNotifier.isLoading &&
-                products.length < productsNotifier.totalProducts) {
+            if (!productsNotifier.isLoading && products.length < productsNotifier.totalProducts) {
               productsNotifier.fetchProducts();
               return const Padding(
                 padding: EdgeInsets.all(8),

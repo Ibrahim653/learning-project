@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kortobaa_core_package/kortobaa_core_package.dart';
 import 'package:riverpod_files/providers/products_provider.dart';
 import 'package:riverpod_files/shared/cart_icon.dart';
 import '../../helper/locale.dart';
@@ -15,6 +16,9 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final allProductProvider = ref.watch(allProductsProvider);
     final cartProducts = ref.watch(CartNotifier.provider);
+   final products= cartProducts.when(
+      onData: (value) => value,
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text(LocaleKeys.greeting.tr()),
@@ -57,7 +61,7 @@ class HomeScreen extends ConsumerWidget {
                   ),
                   Text(product.title.tr()),
                   const Expanded(child: SizedBox()),
-                  if (cartProducts.contains(product))
+                  if (products!.contains(product))
                     TextButton(
                       onPressed: () {
                         ref
@@ -66,7 +70,7 @@ class HomeScreen extends ConsumerWidget {
                       },
                       child: const Text('Remove from cart'),
                     ),
-                  if (!cartProducts.contains(product))
+                  if (!products.contains(product))
                     TextButton(
                       onPressed: () {
                         ref

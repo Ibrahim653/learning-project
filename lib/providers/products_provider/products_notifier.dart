@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_files/blocs/models/products_model/product_response.dart';
 import 'package:riverpod_files/providers/providers.dart';
@@ -17,7 +16,7 @@ class ProductsNotifier extends StateNotifier<List<Product>> {
   bool _isLoading = false;
 
   ProductsNotifier(this._getProductsRepo) : super([]) {
-   // _fetchAllProducts(); 
+    // _fetchAllProducts();
   }
 
   bool get isLoading => _isLoading;
@@ -41,17 +40,16 @@ class ProductsNotifier extends StateNotifier<List<Product>> {
           await _getProductsRepo.getProducts(page: _page, limit: _limit);
 
       response.when(
-        success: (productResponse) {
-          _totalProducts = productResponse.total;
-          if (productResponse.products.isNotEmpty) {
-            _page++;
-            state = [...state, ...productResponse.products];
-          }
-        },
-        failure: (error) => debugPrint('Error: $error'),
-      );
+          success: (productResponse) {
+            _totalProducts = productResponse.total;
+            if (productResponse.products.isNotEmpty) {
+              _page++;
+              state = [...state, ...productResponse.products];
+            }
+          },
+          failure: (error) => Exception(error.toString()));
     } catch (e) {
-      debugPrint('Error: $e');
+      Exception(e.toString());
     } finally {
       _isLoading = false;
     }
@@ -71,9 +69,6 @@ class ProductsNotifier extends StateNotifier<List<Product>> {
     return ProductsNotifier(getProductsRepo);
   });
 }
-
-
-
 
 // class ProductsNotifier extends PageNotifier<List<Product>>
 //     with PaginatedListNotifierMixin<PageState<List<Product>>, Product> {

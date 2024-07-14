@@ -53,18 +53,11 @@ class ProductSearchDelegate extends SearchDelegate<String> {
       itemBuilder: (context, index) {
         final product = searchResults[index];
         return ListTile(
-          leading: Image.network(
-            product.thumbnail,
-            width: 60,
-            height: 60,
-            fit: BoxFit.cover,
-          ),
+          leading: Image.network(product.thumbnail, width: 60, height: 60, fit: BoxFit.cover),
           title: Text(product.title),
           subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
           onTap: () async {
-            await ref
-                .read(ProductDetailsNotifier.provider.notifier)
-                .fetchProductDetails(product.id);
+            await ref.read(ProductDetailsNotifier.provider.notifier).fetchProductDetails(product.id);
             if (context.mounted) context.push(AppRoute.productDetails.path);
           },
         );
