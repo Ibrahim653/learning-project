@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_files/screens/cart/cart_screen.dart';
+import 'package:riverpod_files/screens/category/category_screen.dart';
 import 'package:riverpod_files/screens/clock/clock.dart';
 import 'package:riverpod_files/screens/counter/counter_page.dart';
 import 'package:riverpod_files/screens/home/home_screen.dart';
@@ -23,6 +24,7 @@ enum AppRoute {
   cart('/cart'),
   clock('/clock'),
   productList('/productList'),
+  category('/category'),
   productDetails('/productDetails');
 
   final String path;
@@ -121,6 +123,13 @@ class CustomRouter {
         name: AppRoute.productDetails.name,
         pageBuilder: (context, state) {
           return const NoTransitionPage(child: ProductDetailsScreen());
+        },
+      ),
+        GoRoute(
+        path: AppRoute.category.path,
+        name: AppRoute.category.name,
+        pageBuilder: (context, state) {
+          return const NoTransitionPage(child: CategoryScreen());
         },
       ),
     ],

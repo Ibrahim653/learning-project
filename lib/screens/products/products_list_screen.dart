@@ -32,7 +32,8 @@ class _ProductListScreemState extends ConsumerState<ProductListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final products = ref.watch(ProductsNotifier.provider);
+    final productState = ref.watch(ProductsNotifier.provider);
+    final productNotifier = ref.watch(ProductsNotifier.provider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -49,7 +50,7 @@ class _ProductListScreemState extends ConsumerState<ProductListScreen> {
           ),
         ],
       ),
-      body: products.when(
+      body: productState.when(
         onData: (products) {
           return ListView.builder(
             controller: _scrollController,
@@ -87,11 +88,13 @@ class _ProductListScreemState extends ConsumerState<ProductListScreen> {
                     ),
                   ),
                 );
-              } else {
+              } else if (products.length < productNotifier.totalProducts) {
                 return SpinKitThreeBounce(
                   color: Colors.purple,
                   size: 25,
                 );
+              } else {
+                return SizedBox.shrink();
               }
             },
           );
@@ -101,19 +104,7 @@ class _ProductListScreemState extends ConsumerState<ProductListScreen> {
         ),
         onError: (error) {
           return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Failed to load products: ${error.message}'),
-                const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(ProductsNotifier.provider.notifier).fetchProducts();
-                  },
-                  child: const Text('Retry'),
-                ),
-              ],
-            ),
+            child: Text(error.toString()),
           );
         },
       ),
