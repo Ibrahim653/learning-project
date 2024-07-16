@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kortobaa_core_package/kortobaa_core_package.dart';
 import 'package:riverpod_files/blocs/models/products_model/product_response.dart';
 import 'package:riverpod_files/providers/providers.dart';
+import '../../blocs/interfaces/products_interface.dart';
 import '../../blocs/repos/products_repo/products_repo.dart';
-import '../../networking/new_api.dart';
 
 // class ProductsNotifier extends StateNotifier<List<Product>> {
 //   final ProductsRepo _getProductsRepo;
@@ -174,21 +174,21 @@ class ProductsNotifier extends PageNotifier<List<Product>>
   static final provider = StateNotifierProvider.autoDispose<ProductsNotifier,
       PageState<List<Product>>>((ref) {
     return ProductsNotifier(
-      iNewApi: ref.watch(INewApi.provider),
+      iNewApi: ref.watch(IProductsApi.provider),
       errorHandler: ref.watch(IPageErrorHandler.provider),
       successHandler: ref.watch(IPageSuccessHandler.provider),
     );
   });
 
   ProductsNotifier({
-    required INewApi iNewApi,
+    required IProductsApi iNewApi,
     required super.errorHandler,
     required super.successHandler,
     this.pager = const PageConfigs(10),
   }) : _iNewApi = iNewApi {
     fetch();
   }
-  final INewApi _iNewApi;
+  final IProductsApi _iNewApi;
 
   @override
   final PageConfigs pager;

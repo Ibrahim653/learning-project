@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kortobaa_core_package/kortobaa_core_package.dart';
-import '../networking/category_api.dart';
+import '../blocs/interfaces/category_interface.dart';
 
 class CategoryNotifier extends PageNotifier<List<String>> {
   static final provider = StateNotifierProvider<CategoryNotifier, PageState<List<String>>>((ref) {

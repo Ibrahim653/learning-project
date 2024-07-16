@@ -37,7 +37,7 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(15),
         child: GridView.builder(
           itemCount: allProductProvider.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -56,8 +56,8 @@ class HomeScreen extends ConsumerWidget {
                   Image.asset(
                     product.image,
                     fit: BoxFit.cover,
-                    width: 70,
-                    height: 70,
+                    width: 60,
+                    height: 60,
                   ),
                   Text(product.title.tr()),
                   const Expanded(child: SizedBox()),
@@ -68,7 +68,7 @@ class HomeScreen extends ConsumerWidget {
                             .read(CartNotifier.provider.notifier)
                             .removeProductFromCart(product);
                       },
-                      child: const Text('Remove from cart'),
+                      child:  Text('Remove from cart'),
                     ),
                   if (!products.contains(product))
                     TextButton(
