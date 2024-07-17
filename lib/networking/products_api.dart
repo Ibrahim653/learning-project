@@ -1,5 +1,5 @@
 import 'package:kortobaa_core_package/kortobaa_core_package.dart';
-import 'package:riverpod_files/networking/api_constants.dart';
+import 'package:riverpod_files/networking/api/api_constants.dart';
 import 'package:riverpod_files/blocs/models/products_model/product_response.dart';
 
 import '../blocs/interfaces/products_interface.dart';

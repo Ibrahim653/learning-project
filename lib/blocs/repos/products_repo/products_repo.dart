@@ -1,6 +1,6 @@
 import 'package:riverpod_files/blocs/models/products_model/product_response.dart';
-import 'package:riverpod_files/networking/api_result.dart';
-import 'package:riverpod_files/networking/api_service.dart';
+import 'package:riverpod_files/networking/api/api_result.dart';
+import 'package:riverpod_files/networking/api/api_service.dart';
 
 class ProductsRepo {
   final ApiService _apiService;

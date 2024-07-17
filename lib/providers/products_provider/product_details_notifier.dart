@@ -58,16 +58,13 @@ class ProductDetailsNotifier extends PageNotifier<ProductDetailsModel> {
 
   Future<void> fetchProductDetails(int productId) async {
     update(() async {
-      print('Fetching product details for product ID: $productId');
       final productDetails =
           await productDetailsRepo.getProductDetails(productId);
       return productDetails.when(
         success: (details) {
-          print('Successfully fetched product details: $details');
           return stateFactory.createLoaded(details);
         },
         failure: (error) {
-          print('Failed to fetch product details: $error');
           return stateFactory.createError(PageError.fromError(error));
         },
       );

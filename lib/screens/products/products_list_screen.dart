@@ -3,18 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:kortobaa_core_package/kortobaa_core_package.dart';
 import 'package:riverpod_files/screens/products/products_search_screen.dart';
-
 import '../../providers/products_provider/products_notifier.dart';
 
 class ProductListScreen extends ConsumerStatefulWidget {
   const ProductListScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _ProductListScreemState();
+  ConsumerState<ProductListScreen> createState() => _ProductListScreenState();
 }
 
-class _ProductListScreemState extends ConsumerState<ProductListScreen> {
+class _ProductListScreenState extends ConsumerState<ProductListScreen> {
   final _scrollController = ScrollController();
 
   @override
@@ -24,8 +22,7 @@ class _ProductListScreemState extends ConsumerState<ProductListScreen> {
   }
 
   void _loadMoreData() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
       ref.read(ProductsNotifier.provider.notifier).nextPage();
     }
   }
@@ -42,9 +39,9 @@ class _ProductListScreemState extends ConsumerState<ProductListScreen> {
           IconButton(
             icon: const Icon(Icons.search),
             onPressed: () {
-              showSearch(
-                context: context,
-                delegate: ProductSearchDelegate(ref),
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ProductSearchScreen()),
               );
             },
           ),
@@ -59,12 +56,10 @@ class _ProductListScreemState extends ConsumerState<ProductListScreen> {
               if (index < products.length) {
                 final product = products[index];
                 return Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   child: Card(
                     elevation: 4,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                     child: ListTile(
                       contentPadding: const EdgeInsets.all(16),
                       leading: ClipRRect(
@@ -99,14 +94,8 @@ class _ProductListScreemState extends ConsumerState<ProductListScreen> {
             },
           );
         },
-        onLoading: () => Center(
-          child: CircularProgressIndicator(),
-        ),
-        onError: (error) {
-          return Center(
-            child: Text(error.toString()),
-          );
-        },
+        onLoading: () => Center(child: CircularProgressIndicator()),
+        onError: (error) => Center(child: Text(error.toString())),
       ),
     );
   }

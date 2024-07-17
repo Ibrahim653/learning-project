@@ -3,8 +3,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_files/blocs/models/products_model/product_details_model.dart';
 
-import '../../../networking/api_result.dart';
-import '../../../networking/api_service.dart';
+import '../../../networking/api/api_result.dart';
+import '../../../networking/api/api_service.dart';
 import '../../../providers/providers.dart';
 
 class ProductDetailsRepo {

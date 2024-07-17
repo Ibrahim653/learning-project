@@ -5,7 +5,7 @@ import 'package:kortobaa_core_package/kortobaa_core_package.dart';
 import 'package:riverpod_files/generated/codegen_loader.g.dart';
 import 'package:riverpod_files/generated/locale_keys.g.dart';
 import 'package:riverpod_files/helper/locale.dart';
-import 'package:riverpod_files/networking/api_constants.dart';
+import 'package:riverpod_files/networking/api/api_constants.dart';
 import 'package:riverpod_files/routes/custome_router.dart';
 
 void main() async {

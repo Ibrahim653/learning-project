@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_files/networking/api_service.dart';
-import 'package:riverpod_files/networking/dio_factory.dart';
+import 'package:riverpod_files/networking/api/api_service.dart';
+import 'package:riverpod_files/networking/api/dio_factory.dart';
 
 final dioProvider = Provider<Dio>((ref) => DioFactory.getdio());
 
