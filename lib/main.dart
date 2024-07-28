@@ -55,7 +55,7 @@ class MyApp extends ConsumerWidget {
 
 class _TokenHolder extends ITokenHolder {
   @override
-  String? get accessToken => " set token here ";
+  String? get accessToken => "set token here";
 
   @override
   Future<void> refreshToken() async {}
