@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:kortobaa_core_package/kortobaa_core_package.dart';
 import '../../providers/search_notifier.dart';
-import '../../providers/products_provider/product_details_notifier.dart';
 import '../../routes/custome_router.dart';
 
 class ProductSearchScreen extends ConsumerStatefulWidget {
@@ -97,8 +96,7 @@ class _ProductSearchScreenState extends ConsumerState<ProductSearchScreen> {
                   title: Text(product.title),
                   subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
                   onTap: () {
-                    ref.read(ProductDetailsNotifier.provider.notifier).fetchProductDetails(product.id);
-                    context.push(AppRoute.productDetails.path);
+                    context.push(AppRoute.productDetails.path,extra: product.id);
                   },
                 ),
               );

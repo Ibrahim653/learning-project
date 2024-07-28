@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kortobaa_core_package/kortobaa_core_package.dart';
+import '../../blocs/interfaces/product_details_interface.dart';
 import '../../blocs/models/products_model/product_details_model.dart';
-import '../../blocs/repos/products_repo/product_details_repo.dart';
 
 // final productDetailsRepoProvider = Provider<ProductDetailsRepo>((ref) {
 //   final apiService = ref.watch(apiServiceProvider);
@@ -37,37 +37,80 @@ import '../../blocs/repos/products_repo/product_details_repo.dart';
 //   });
 // }
 
+// class ProductDetailsNotifier extends PageNotifier<ProductDetailsModel> {
+//   static final provider = StateNotifierProvider.family
+//       .autoDispose<ProductDetailsNotifier, PageState<ProductDetailsModel>, int>(
+//           (ref, id) {
+//     final productDetailsRepo = ref.watch(productDetailsRepoProvider);
+//     return ProductDetailsNotifier(
+//       id,
+//       productDetailsRepo: productDetailsRepo,
+//       errorHandler: ref.watch(IPageErrorHandler.provider),
+//       successHandler: ref.watch(IPageSuccessHandler.provider),
+//     );
+//   });
+
+//   ProductDetailsNotifier(
+//     this.id, {
+//     required this.productDetailsRepo,
+//     required super.errorHandler,
+//     required super.successHandler,
+//   }) : super() {
+//     fetchProductDetails();
+//   }
+
+//   final ProductDetailsRepo productDetailsRepo;
+//   final int id;
+//   Future<void> fetchProductDetails() async {
+//     update(() async {
+//       final productDetails = await productDetailsRepo.getProductDetails(id);
+//       return productDetails.when(
+//         success: (details) {
+//           return stateFactory.createLoaded(details);
+//         },
+//         failure: (error) {
+//           return stateFactory.createError(PageError.fromError(error));
+//         },
+//       );
+//     });
+//   }
+// }
+
+// with remote client
+
 class ProductDetailsNotifier extends PageNotifier<ProductDetailsModel> {
-  static final provider = StateNotifierProvider<ProductDetailsNotifier,
-      PageState<ProductDetailsModel>>((ref) {
-    final productDetailsRepo = ref.watch(productDetailsRepoProvider);
+  static final provider = StateNotifierProvider.family
+      .autoDispose<ProductDetailsNotifier, PageState<ProductDetailsModel>, int>(
+          (ref, id) {
     return ProductDetailsNotifier(
-      productDetailsRepo: productDetailsRepo,
+      id,
+      iProductDetailsApi: ref.watch(IProductDetailsApi.provider),
       errorHandler: ref.watch(IPageErrorHandler.provider),
       successHandler: ref.watch(IPageSuccessHandler.provider),
     );
   });
 
-  ProductDetailsNotifier({
-    required this.productDetailsRepo,
+  ProductDetailsNotifier(
+    this.productId, {
+    required this.iProductDetailsApi,
     required super.errorHandler,
     required super.successHandler,
-  }) : super();
+  }) : super() {
+    fetchProductDetails();
+  }
 
-  final ProductDetailsRepo productDetailsRepo;
+  final IProductDetailsApi iProductDetailsApi;
+  final int productId;
 
-  Future<void> fetchProductDetails(int productId) async {
-    update(() async {
+  Future<void> fetchProductDetails() async {
+    updateState(stateFactory.createLoading());
+
+    try {
       final productDetails =
-          await productDetailsRepo.getProductDetails(productId);
-      return productDetails.when(
-        success: (details) {
-          return stateFactory.createLoaded(details);
-        },
-        failure: (error) {
-          return stateFactory.createError(PageError.fromError(error));
-        },
-      );
-    });
+          await iProductDetailsApi.getProductDetails(productId);
+      updateState(stateFactory.createLoaded(productDetails));
+    } catch (e) {
+      updateState(stateFactory.createError(PageError.fromError(e)));
+    }
   }
 }

@@ -5,11 +5,11 @@ import 'package:kortobaa_core_package/kortobaa_core_package.dart';
 import '../../providers/products_provider/product_details_notifier.dart';
 
 class ProductDetailsScreen extends ConsumerWidget {
-  const ProductDetailsScreen({super.key});
-
+  const ProductDetailsScreen(this.productId, {super.key});
+final int productId;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productDetailsState = ref.watch(ProductDetailsNotifier.provider);
+    final productDetailsState = ref.watch(ProductDetailsNotifier.provider(productId));
 
     return Scaffold(
       appBar: AppBar(

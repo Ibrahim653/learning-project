@@ -122,7 +122,8 @@ class CustomRouter {
         path: AppRoute.productDetails.path,
         name: AppRoute.productDetails.name,
         pageBuilder: (context, state) {
-          return const NoTransitionPage(child: ProductDetailsScreen());
+          final productId = state.extra as int;
+          return  NoTransitionPage(child: ProductDetailsScreen(productId));
         },
       ),
         GoRoute(
