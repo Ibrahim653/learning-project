@@ -33,7 +33,7 @@ void main() {
   });
 
   setUp(() {
-    // Initialize mocks and login notifier
+    // Arrange: Initialize mocks and login notifier
     mockLoginRepo = MockLoginRepo();
     mockSecureData = MockSimpleSecureData();
     mockErrorHandler = MockPageErrorHandler();
@@ -54,6 +54,7 @@ void main() {
 
   group('LoginNotifier', () {
     test('successful login', () async {
+      // Arrange
       final loginResponse = LoginResponse(
         id: 1,
         username: 'testUser',
@@ -71,15 +72,17 @@ void main() {
         (_) async => Success(loginResponse),
       );
 
+      // Act
       await loginNotifier.login();
 
+      // Assert
       expect(loginNotifier.state, isA<PageState<LoginResponse>>());
-
-      // Verify that secureData.readString is called
       verify(() => mockSecureData.readString(Constants.accessToken)).called(1);
+     verifyNever(() => mockSecureData.readString(Constants.refreshToken));
     });
 
     test('failed login', () async {
+      // Arrange
       final error = PageError(Exception('Login failed'));
 
       // Mock the failed login response
@@ -87,8 +90,10 @@ void main() {
         (_) async => Failure(error),
       );
 
+      // Act
       await loginNotifier.login();
 
+      // Assert
       expect(loginNotifier.state, isA<ErrorPageState<LoginResponse>>());
       verifyNever(() => mockSecureData.readString(any()));
     });
