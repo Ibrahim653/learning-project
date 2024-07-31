@@ -1,46 +1,29 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
+import 'package:mockito/mockito.dart';
 import 'package:kortobaa_core_package/kortobaa_core_package.dart';
 import 'package:riverpod_files/blocs/models/login_models/login_response.dart';
-import 'package:riverpod_files/blocs/models/login_models/login_request_body.dart';
-import 'package:riverpod_files/blocs/repos/login_repo/login_repo.dart';
 import 'package:riverpod_files/helper/constants.dart';
-import 'package:riverpod_files/networking/api/api_result.dart';
 import 'package:riverpod_files/providers/login_notifier/login_notifier.dart';
+import 'package:riverpod_files/networking/api/api_result.dart';
 
-// Define mock classes
-class MockLoginRepo extends Mock implements LoginRepo {}
-
-class MockSimpleSecureData extends Mock implements SimpleSecureData {}
-
-class MockPageErrorHandler extends Mock implements IPageErrorHandler {}
-
-class MockPageSuccessHandler extends Mock implements IPageSuccessHandler {}
-
-// Define a fake class for LoginRequestBody
-class FakeLoginRequestBody extends Fake implements LoginRequestBody {}
+import '../../mocks.mocks.dart';
 
 void main() {
   late LoginNotifier loginNotifier;
   late MockLoginRepo mockLoginRepo;
   late MockSimpleSecureData mockSecureData;
-  late MockPageErrorHandler mockErrorHandler;
-  late MockPageSuccessHandler mockSuccessHandler;
-
-  // Register the fake for LoginRequestBody
-  setUpAll(() {
-    registerFallbackValue(FakeLoginRequestBody());
-  });
+  late MockIPageErrorHandler mockErrorHandler;
+  late MockIPageSuccessHandler mockSuccessHandler;
 
   setUp(() {
     // Arrange: Initialize mocks and login notifier
     mockLoginRepo = MockLoginRepo();
     mockSecureData = MockSimpleSecureData();
-    mockErrorHandler = MockPageErrorHandler();
-    mockSuccessHandler = MockPageSuccessHandler();
+    mockErrorHandler = MockIPageErrorHandler();
+    mockSuccessHandler = MockIPageSuccessHandler();
 
     // Configure mock behavior for readString to return a Future<String?>
-    when(() => mockSecureData.readString(any())).thenAnswer(
+    when(mockSecureData.readString(any)).thenAnswer(
       (_) async => 'mocked_token_value',
     );
 
@@ -68,7 +51,7 @@ void main() {
       );
 
       // Mock the successful login response
-      when(() => mockLoginRepo.login(any())).thenAnswer(
+      when(mockLoginRepo.login(any)).thenAnswer(
         (_) async => Success(loginResponse),
       );
 
@@ -77,8 +60,8 @@ void main() {
 
       // Assert
       expect(loginNotifier.state, isA<PageState<LoginResponse>>());
-      verify(() => mockSecureData.readString(Constants.accessToken)).called(1);
-     verifyNever(() => mockSecureData.readString(Constants.refreshToken));
+      verify(mockSecureData.readString(Constants.accessToken)).called(1);
+      verifyNever(mockSecureData.readString(Constants.refreshToken));
     });
 
     test('failed login', () async {
@@ -86,7 +69,7 @@ void main() {
       final error = PageError(Exception('Login failed'));
 
       // Mock the failed login response
-      when(() => mockLoginRepo.login(any())).thenAnswer(
+      when(mockLoginRepo.login(any)).thenAnswer(
         (_) async => Failure(error),
       );
 
@@ -95,7 +78,7 @@ void main() {
 
       // Assert
       expect(loginNotifier.state, isA<ErrorPageState<LoginResponse>>());
-      verifyNever(() => mockSecureData.readString(any()));
+      verifyNever(mockSecureData.readString(any));
     });
   });
 }

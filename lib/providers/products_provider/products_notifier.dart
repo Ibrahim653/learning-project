@@ -1,9 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kortobaa_core_package/kortobaa_core_package.dart';
 import 'package:riverpod_files/blocs/models/products_model/product_response.dart';
-import 'package:riverpod_files/providers/providers.dart';
 import '../../blocs/interfaces/products_interface.dart';
-import '../../blocs/repos/products_repo/products_repo.dart';
 
 // class ProductsNotifier extends StateNotifier<List<Product>> {
 //   final ProductsRepo _getProductsRepo;
@@ -67,10 +65,7 @@ import '../../blocs/repos/products_repo/products_repo.dart';
 //   });
 // }
 
-
-/// ///// 
-
-
+/// /////
 
 // final getProductsRepoProvider = Provider<ProductsRepo>((ref) {
 //   final apiService = ref.watch(apiServiceProvider);
@@ -139,75 +134,73 @@ import '../../blocs/repos/products_repo/products_repo.dart';
 //         .toList();
 //   }
 
-  // Future<void> fetchProducts() async {
-  //   state = stateFactory.createLoading();
-  //   final result = await getData(currentPage, pager.pageSize);
-  //   if (result.items.isNotEmpty) {
-  //     final products = result.items;
-  //     state = stateFactory.createLoaded(products);
-  //     pager.pageSize + 1;
-  //   }
-  // }
+// Future<void> fetchProducts() async {
+//   state = stateFactory.createLoading();
+//   final result = await getData(currentPage, pager.pageSize);
+//   if (result.items.isNotEmpty) {
+//     final products = result.items;
+//     state = stateFactory.createLoaded(products);
+//     pager.pageSize + 1;
+//   }
+// }
 
-  // static final productsProvider =
-  //     StateNotifierProvider<ProductsNotifier, PageState<List<Product>>>((ref) {
-  //   final getProductsRepo = ref.watch(getProductsRepoProvider);
-  //   return ProductsNotifier(
-  //     getProductsRepo: getProductsRepo,
-  //     errorHandler: ref.watch(IPageErrorHandler.provider),
-  //     successHandler: ref.watch(IPageSuccessHandler.provider),
-  //   );
-  // });
+// static final productsProvider =
+//     StateNotifierProvider<ProductsNotifier, PageState<List<Product>>>((ref) {
+//   final getProductsRepo = ref.watch(getProductsRepoProvider);
+//   return ProductsNotifier(
+//     getProductsRepo: getProductsRepo,
+//     errorHandler: ref.watch(IPageErrorHandler.provider),
+//     successHandler: ref.watch(IPageSuccessHandler.provider),
+//   );
+// });
 //}
 
+// with remote client
 
-
-// with remote client 
-
-final getProductsRepoProvider = Provider<ProductsRepo>((ref) {
-  final apiService = ref.watch(apiServiceProvider);
-  return ProductsRepo(apiService);
-});
+// final getProductsRepoProvider = Provider<ProductsRepo>((ref) {
+//   final apiService = ref.watch(apiServiceProvider);
+//   return ProductsRepo(apiService);
+// });
 
 class ProductsNotifier extends PageNotifier<List<Product>>
     with PaginatedListNotifierMixin<PageState<List<Product>>, Product> {
   static final provider = StateNotifierProvider.autoDispose<ProductsNotifier,
       PageState<List<Product>>>((ref) {
     return ProductsNotifier(
-      iNewApi: ref.watch(IProductsApi.provider),
+      iProductsApi: ref.watch(IProductsApi.provider),
       errorHandler: ref.watch(IPageErrorHandler.provider),
       successHandler: ref.watch(IPageSuccessHandler.provider),
     );
   });
 
   ProductsNotifier({
-    required IProductsApi iNewApi,
+    required IProductsApi iProductsApi,
     required super.errorHandler,
     required super.successHandler,
     this.pager = const PageConfigs(10),
-  }) : _iNewApi = iNewApi {
+  }) : _iProductsApi = iProductsApi {
     fetch();
   }
-  final IProductsApi _iNewApi;
+  final IProductsApi _iProductsApi;
 
   @override
   final PageConfigs pager;
   final int _limit = 10;
-   int totalProducts = 1;
+  int totalProducts = 1;
 
   @override
   Future<PageList<Product>> getData(int page, int count) async {
-    final response =
-        await _iNewApi.getProducts( page * count,  _limit,);
-        totalProducts = response.total;
+    final response = await _iProductsApi.getProducts(
+      page * count,
+      _limit,
+    );
+    totalProducts = response.total;
 
-        return PageList(response.products);
-
-
+    return PageList(response.products);
   }
 
   Future<void> fetchProducts() async {
-        if (state.data != null && state.data!.length >= totalProducts) return;
+    if (state.data != null && state.data!.length >= totalProducts) return;
 
     updateState(stateFactory.createLoading());
 
@@ -220,12 +213,4 @@ class ProductsNotifier extends PageNotifier<List<Product>>
       updateState(stateFactory.createError(PageError.fromError(e)));
     }
   }
-
-  List<Product> searchProducts(String query) {
-    final lowerCaseQuery = query.toLowerCase();
-    return state.data!
-        .where(
-            (product) => product.title.toLowerCase().contains(lowerCaseQuery))
-        .toList();
-  }
-    }
+}
