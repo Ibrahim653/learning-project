@@ -1,0 +1,23 @@
+{
+  "appName": "اسم التطبيق",
+  "greeting": "مرحباً، قرطبة",
+  "home_screen": {
+    "title": "الرئيسية",
+    "body": "نص الصفحة الرئيسية",
+    "toggle_language": "غيّر اللغة"
+  },
+  "ar": "العربية",
+  "en": "English",
+  "start": "ابدأ",
+  "toggle" : "غير اللغة",
+  "products": {
+    "groovy_shorts": "شورت جروفي",
+    "karati_kit": "طقم كاراتي",
+    "denim_jeans": "جينز دنيم",
+    "red_backpack": "حقيبة ظهر حمراء",
+    "drum_sticks": "طبل وعصي",
+    "blue_suitcase": "حقيبة زرقاء",
+    "roller_skates": "أحذية التزلج",
+    "electric_guitar": "جيتار كهربائي"
+  }
+}
